@@ -1,0 +1,81 @@
+/* This is the stylesheet for the Teletext50 Web pages. */
+
+/* Make Teletext50 usable through font-* properties. */
+@import url(Teletext50-faces.css);
+
+/* Use Teletext50 with proportional spacing for everything. */
+body {
+    font-family: Teletext50;
+    font-size: 25px;
+    font-synthesis: none;
+}
+
+.text-sample {
+    font-size: 50px;
+    font-feature-settings: normal;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Except where it's conventional to use a monospaced version. */
+kbd, code, tt, pre, .{
+    font-family: Teletext50, monospace;
+    font-feature-settings: normal;
+}
+
+/* Don't use any leading in <pre> so that mosaic graphics work. */
+pre {
+    line-height: 1em;
+}
+
+h1 {
+    font-size: 5em;
+    font-weight: inherit;
+    margin-top: 0;
+    margin-bottom: -0.2em;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: inherit;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+ul {
+    list-style-type: "\2022  ";
+}
+
+img {
+    max-width: 100%;
+}
+
+.separated {
+    font-feature-settings: 'ss16';
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+}
+
+a:link {
+  color: #ff0;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #0ff;
+}
+
+a:active {
+  color: #f00;
+}
+
+a:active {
+  color: #f0f;
+}

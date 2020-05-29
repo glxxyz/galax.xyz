@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+
+<!-- 
+    Teletext example page 
+    Galax 2014-2015 http://galax.xyz
+    
+    MODE7GX3.TTF font by Galax 2014 - based on ModeSeven, created in 1998 by Andrew Bulhak
+
+-->
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>Galax Teletext Converter</title>
+<link rel="stylesheet" href="TELETEXT.CSS">
+<script src="TELETEXT.js"></script>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+
+function initTools() {
+    updateOutput();
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    document.getElementById('frames').addEventListener('change', handleFrameSelect, false);
+    document.getElementById("inputtext").onkeyup = updateOutput;
+    document.getElementById("numrows").onkeyup = updateOutput;
+    document.getElementById("numcols").onkeyup = updateOutput;
+    document.getElementById("samplefiles").onchange = loadSampleFile;
+    document.getElementById("sampleframes").onchange = loadSampleFrame;
+    
+    document.getElementById("doubleecho").onchange = updateOutput;
+	
+    document.getElementById("revealButton").onclick = revealClicked;
+    document.getElementById("playButton").onclick = playClicked;
+	
+    document.getElementById("pagenum").onkeyup = updateFrameOutput;
+    document.getElementById("pageup").onclick = pageupClicked;
+    document.getElementById("pagedown").onclick = pagedownClicked;
+    document.getElementById("subpagenum").onkeyup = updateFrameOutput;
+    document.getElementById("subpageup").onclick = subpageupClicked;
+    document.getElementById("subpagedown").onclick = subpagedownClicked;
+
+	// load default file
+	initTeletext();
+    
+}
+
+window.onload = initTools;
+//-->
+</script>
+
+</head>
+<body><center>
+<div class="teletext"><center><a href="INDEX.HTM">[ Back</a>                                       
+<span class="yellow">&#xe054;&#xe065;&#xe06c;&#xe065;&#xe074;&#xe065;&#xe078;&#xe074;&#xe020;&#xe057;&#xe065;&#xe062;&#xe020;&#xe047;&#xe065;&#xe06e;&#xe065;&#xe072;&#xe061;&#xe074;&#xe06f;&#xe072;</span>
+<span class="green">&#xe154;&#xe165;&#xe16c;&#xe165;&#xe174;&#xe165;&#xe178;&#xe174;&#xe120;&#xe157;&#xe165;&#xe162;&#xe120;&#xe147;&#xe165;&#xe16e;&#xe165;&#xe172;&#xe161;&#xe174;&#xe16f;&#xe172;</span>
+</div><table><tr><td><div class="teletext"><table><tr><td class="teletext" valign="top">
+<div class="black greenbg">Mode 7 Input:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><textarea rows="20" cols="80" id="inputtext">To use this page:
+                                                             
+Simply select a sample file from the   
+dropdown list.                         
+                                       
+Or use 'Choose Files' below to load a  
+local Teletext file of teletext data.
+                                         
+You can also input or edit the text in 
+this box, using backslashes and d or x 
+to escape hex and decimal values:       
+ \x81 like\d131this! \xff\d255\xa3\d163                    
+                                       
+The Teletext formatted output is shown 
+below, and the source for that output  
+is in the box at the bottom of the page.</textarea>
+<span class="green"><input size="2" value="40" id="numcols"></input> Columns <input size="2" value="25" id="numrows"></input> Rows <input id="doubleecho" value="checked" type="checkbox">Double Height Echo</span>
+<span class="green">Binary: <input type="file" id="files" name="files[]" multiple /><select id="samplefiles">
+    <option value="SAMPLES/DEFAULT.M7">Sample Binary...</option>
+    <option value="SAMPLES/ASCII.TTX">Ascii Table</option>
+    <option value="SAMPLES/CHANNEL4.M7">Channel 4 Logo</option>
+    <option value="SAMPLES/CENTRAL.M7">Central Logo</option>
+    <option value="SAMPLES/BARS.M7">Colour Bars</option>
+    <option value="SAMPLES/COMPUFAX.M7">Compufax Viewdata System</option>
+    <option value="SAMPLES/DEFAULT.M7">Default (instructions)</option>
+    <option value="SAMPLES/EDGE.TTX">Edge Test</option>
+    <option value="SAMPLES/E97_P703.M7">Election '97 Index</option>
+    <option value="SAMPLES/E97_P724.M7">Election '97 Results</option>
+    <option value="SAMPLES/eng_test.ttx">Engineering Testcard (Stardot)</option>
+    <option value="SAMPLES/TESTCARD.M7">Engineering Testcard (Alternate)</option>
+    <option value="SAMPLES/TVGUIDE.M7">TV Guide</option>
+</select></span>
+<span class="green">Frames: <input type="file" id="frames" name="frames[]" multiple /><select id="sampleframes">
+    <option value="">Sample Frames...</option>
+    <option value="SAMPLES/t40-frames-2015-04-22.csv">Teletext40 2015-04-22</option>
+    <option value="SAMPLES/facebash.csv">Keyboard Frustration</option>
+    <option value="SAMPLES/jeffrun.csv">Jeff Running</option>
+    <option value="SAMPLES/muybridge.csv">Muybridge's Horse</option>
+    <option value="SAMPLES/swirl.csv">Swirl</option>
+    <option value="SAMPLES/sevenseg.csv">Seven Segment Display</option>
+    <option value="SAMPLES/hamu.csv">Annoying Hampster</option>
+    <option value="SAMPLES/banana.csv">Annoying Banana</option>
+    
+</select></span>
+</td>
+</tr>
+<tr>
+<td class="teletext" valign="top">
+<div class="black greenbg">Page:<input size="2" value="100" id="pagenum"><button id="pageup">+</button><button id="pagedown">-</button> Sub:<input size="2" value="1" id="subpagenum"><button id="subpageup">+</button><button id="subpagedown">-</button>/<span id="numsubpages">1</span> <button id="revealButton">Reveal</button> <button id="playButton">Play</button><input size="2" value="80" id="playdelay">ms</div><div id="htmloutput" class="teletext"></div>
+</td></tr></table><div class="teletext"><div class="black greenbg">Source Output:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><textarea rows="5" cols="90" id="textoutput"></textarea>
+
+<div class="black greenbg">Teletext40 Output:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><textarea rows="5" cols="90" id="t40output"></textarea>
+
+<span class="bluebg yellow ">  Teletext font by <a href="mailto:3d@galax.xyz" class="yellow">3d@galax.xyz</a> 2014    </span>
+   <a href="http://galax.xyz" class="red">Home</a>   <!-- -->   <a href="#top" class="green">Top</a>    <!-- -->  <a href="STATIC.HTM" class="yellow">Static</a>  <!-- -->   <a href="mailto:3d@galax.xyz" class="cyan">Email</a>  <!-- -->
+</div>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+/*
+ * This file defines @font-face rules to make the various standard
+ * Teletext50 fonts available in CSS.
+ */
+
+/* Default Width */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: normal;
+    src: url(Teletext50.otf) format("opentype");
+}
+
+/* Half Default Width (for double height text) */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: ultra-condensed;
+    src: url(Teletext50-ultracondensed.otf) format("opentype");
+}
+
+/* Square Pixels (widest) */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: expanded;
+    src: url(Teletext50-extended.otf) format("opentype");
+}
+
+/* Hald-Width Square Pixels (for double height) */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: extra-condensed;
+    src: url(Teletext50-extracondensed.otf) format("opentype");
+}
+
+/* More Condensed */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: semi-condensed;
+    src: url(Teletext50-semicondensed.otf) format("opentype");
+}
+
+/* Most Condensed */
+@font-face {
+    font-family: Teletext50;
+    font-stretch: condensed;
+    src: url(Teletext50-condensed.otf) format("opentype");
+}
+
+
+

@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html>
+
+<!-- 
+    Teletext example page 
+    Galax 2014 http://galax.xyz
+    
+    MODE7GX.TTF font by Galax 2014 - based on ModeSeven, created in 1998 by Andrew Bulhak
+
+-->
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>Galax Teletext Graphics</title>
+<link rel="stylesheet" href="TELETEXT.CSS">
+
+
+<script type="text/javascript" language="JavaScript">
+<!--
+function initTools() {
+    updateOutput();
+    document.getElementById("inputtext").onkeyup = updateOutput;
+}
+
+var pixelArray = []; // row column (double vertical, treble horizontal)
+var graphicsData = {}; // "row,column" -> string
+
+function addPixel(pixelOn, pixelRow, pixelCol) {
+    // ensure the row is present
+    if (pixelArray.length <= pixelRow) {
+        for (var i=0; i<=pixelRow; i++) {
+            if (typeof (pixelArray[i]) == 'undefined') {
+                pixelArray[i] = []
+            }
+        }
+    }
+
+    pixelArray[pixelRow][pixelCol] = pixelOn;
+    
+    return pixelCol;
+}
+
+function getPixel(i, j) {
+    return    (typeof (pixelArray[i]) != 'undefined')
+           && (typeof (pixelArray[i][j]) != 'undefined')
+           && pixelArray[i][j];
+}
+
+function generateChar(i, j, separatedMode) {
+    var bit1  = getPixel(i*3,   j*2)   ? 1 : 0;
+    var bit2  = getPixel(i*3,   j*2+1) ? 2 : 0;
+    var bit4  = getPixel(i*3+1, j*2)   ? 4 : 0;
+    var bit8  = getPixel(i*3+1, j*2+1) ? 8 : 0;
+    var bit16 = getPixel(i*3+2, j*2)   ? 16 : 0;
+    var bit32 = getPixel(i*3+2, j*2+1) ? 32 : 0;
+    var bitval =  bit1 + bit2 + bit4 + bit8 + bit16 + bit32;
+    if (bitval == 0) {
+        return " ";
+    }
+    var val = (separatedMode ? 0xE2C0 : 0xE200) + bitval;
+    var entity = "&#x" + val.toString(16) + ";";
+    return entity;
+}
+
+function generateMode7(i, j) {
+    var bit1  = getPixel(i*3,   j*2)   ? 32 : 33;
+    var bit2  = getPixel(i*3,   j*2+1) ? 2 : 0;
+    var bit4  = getPixel(i*3+1, j*2)   ? 4 : 0;
+    var bit8  = getPixel(i*3+1, j*2+1) ? 8 : 0;
+    var bit16 = getPixel(i*3+2, j*2)   ? 16 : 0;
+    var bit32 = getPixel(i*3+2, j*2+1) ? 64 : 0;
+    var bitval =  bit1 + bit2 + bit4 + bit8 + bit16 + bit32;
+    var entity = String.fromCharCode(bitval);
+    return entity;
+}
+
+function addGraphics(newchar, pixelRow, pixelCol) {
+    var graphicsRow = Math.floor(pixelRow / 3);
+    var graphicsCol = Math.floor(pixelCol / 2);
+    var key = graphicsRow+","+graphicsCol;
+    if (typeof (graphicsData[key]) == 'undefined') {
+        graphicsData[key] = newchar;
+    } else {
+        graphicsData[key] = graphicsData[key] + newchar;
+    }
+}
+
+function getGraphics(graphicsRow, graphicsCol) {
+    var key = graphicsRow+","+graphicsCol;
+    if (typeof (graphicsData[key]) == 'undefined') {
+        return "";
+    } 
+    
+    return graphicsData[key];
+}
+
+function buildArrays() {
+    pixelArray = [];
+    graphicsData = []; 
+    var pixelRow = 0;
+    var pixelCol = 0;
+    var maxPixelCol = 0;
+    skipNext = false;
+
+    var inputtext = document.getElementById("inputtext");
+    var indata = inputtext.value;
+    for (var x in indata) {
+        var newchar = indata[x];
+        var outputPixel = false;
+        var pixel = false;
+        
+        switch (newchar) {
+            case "\\":
+                skipNext = true;
+                break;
+                
+            case "\n":
+                pixelRow += 1;
+                pixelCol = 0;
+                skipNext = false;
+                break;
+                
+            case "K": case "R": case "G": case "Y": case "B": case "M": case "C": case "W":
+                addGraphics(newchar, pixelRow, pixelCol);
+            case " ":
+                pixel = false;
+                outputPixel = true;
+                break;
+
+            case "k": case "r": case "g": case "y": case "b": case "m": case "c":
+            case "w": case "s": case "t":
+                addGraphics(newchar, pixelRow, pixelCol);
+            default:
+                pixel = true;
+                outputPixel = true;
+                break;
+        }
+
+        if (outputPixel) {
+            if (skipNext) {
+                skipNext = false;
+            } else {
+                addPixel(pixel, pixelRow, pixelCol);
+                pixelCol += 1;
+            }
+        }
+        
+        maxPixelCol = Math.max(maxPixelCol, pixelCol);
+    }    
+    
+    return maxPixelCol;
+}
+
+function createSpan(backgroundColour, foregroundColour) {
+    var span = ""
+    if (foregroundColour != defaultFgColour) {
+        if (span.length) { span += " "; }
+        span += foregroundName[foregroundColour];
+    }
+    if (backgroundColour != defaultBgColour) {
+        if (span.length) { span += " "; }
+        span += backgroundName[backgroundColour];
+    }
+    if (span.length) {
+        span = '<span class="' + span + '">';
+    }
+    return span;
+}
+
+var defaultBgColour = 0;
+var defaultFgColour = 7;
+var backgroundName = ["blackbg", "redbg", "greenbg", "yellowbg", "bluebg", "magentabg", "cyanbg", "whitebg"];
+var foregroundName = ["black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"];
+
+function processArrays(maxPixelCol) {
+    var outputData = "";
+    var mode7Data = ""
+    
+    var maxGraphicsRow = Math.floor((pixelArray.length + 2) / 3);
+    var maxGraphicsCol = Math.floor(maxPixelCol / 2);
+    
+    var backgroundColour = defaultBgColour;
+    var foregroundColour = defaultFgColour;
+    var separatedMode = false;
+    var inSpan=false;
+    
+    for (var i = 0; i < maxGraphicsRow; i++) {
+
+        var span = createSpan(backgroundColour, foregroundColour);
+        if (span.length) {
+            inSpan = true;
+            outputData += span;
+        }
+        
+        for (var j = 0; j <= maxGraphicsCol; j++) {
+            var newBgColour = backgroundColour;
+            var newFgColour = foregroundColour;
+            var graphics = getGraphics(i, j);
+
+            for (var y in graphics) {
+                var graphicsChar = graphics[y];
+                switch (graphicsChar) {
+                    case "k": newFgColour = 0; break;
+                    case "r": newFgColour = 1; break;
+                    case "g": newFgColour = 2; break;
+                    case "y": newFgColour = 3; break;
+                    case "b": newFgColour = 4; break;
+                    case "m": newFgColour = 5; break;
+                    case "c": newFgColour = 6; break;
+                    case "w": newFgColour = 7; break;
+                    case "K": newBgColour = 0; break;
+                    case "R": newBgColour = 1; break;
+                    case "G": newBgColour = 2; break;
+                    case "Y": newBgColour = 3; break;
+                    case "B": newBgColour = 4; break;
+                    case "M": newBgColour = 5; break;
+                    case "C": newBgColour = 6; break;
+                    case "W": newBgColour = 7; break;
+                    case "s": separatedMode = true; break;
+                    case "t": separatedMode = false; break;
+                }
+            }
+            
+            if (   newBgColour != backgroundColour
+                || newFgColour != foregroundColour) {                 
+                backgroundColour = newBgColour;
+                foregroundColour = newFgColour;
+
+                if (inSpan) {
+                    outputData += "</span>";
+                    inSpan = false;
+                }
+                
+                var span = createSpan(backgroundColour, foregroundColour);
+                if (span.length) {
+                    inSpan = true;
+                    outputData += span;
+                }
+            }
+            outputData += generateChar(i, j, separatedMode);
+            mode7Data += generateMode7(i, j);
+        }
+        
+        if (inSpan) {
+            outputData += "</span>";
+            inSpan = false;
+        }
+        outputData += "\n";
+        mode7Data += "\n";
+    }
+    
+    textoutput.value = '<div class="teletext">' + outputData + "</div>";
+    mode7output.value = mode7Data;
+    htmloutput.innerHTML = outputData;
+}
+
+function updateOutput() {
+    var maxPixelCol = buildArrays();    
+    processArrays(maxPixelCol);
+}
+
+window.onload = initTools;
+//-->
+</script>
+
+</head>
+<center><table><tr><td class="teletext"><div class="teletext"><a href="INDEX.HTM">[ Back</a>                      
+
+<span class="green">&#xe054;&#xe065;&#xe06c;&#xe065;&#xe074;&#xe065;&#xe078;&#xe074;&#xe020;&#xe047;&#xe072;&#xe061;&#xe070;&#xe068;&#xe069;&#xe063;&#xe073;&#xe020;&#xe047;&#xe065;&#xe06e;&#xe065;&#xe072;&#xe061;&#xe074;&#xe06f;&#xe072;</span>
+<span class="cyan">&#xe154;&#xe165;&#xe16c;&#xe165;&#xe174;&#xe165;&#xe178;&#xe174;&#xe120;&#xe147;&#xe172;&#xe161;&#xe170;&#xe168;&#xe169;&#xe163;&#xe173;&#xe120;&#xe147;&#xe165;&#xe16e;&#xe165;&#xe172;&#xe161;&#xe174;&#xe16f;&#xe172;</span>
+</div>
+<table><tr><td class="teletext"><div class="teletext"><table><tr><td class="teletext" valign="top"><div class="black greenbg">Input Image Data:</div><textarea rows="25" cols="80" id="inputtext">(This is not a valid TELETEXT Image!)
+
+
+Y                                       K
+           
+
+Y Kc c c c c c c c c c c c c c c c c c
+  c c c c c c c c c c c c c c c c c c Y K
+   c c c c c c c c c c c c c c c c c c
+  c c c c c c c c c c c c c c c c c c 
+Y Kc c c c c c c c c c c c c cKc c c cY K
+  c c c c c c c c c c c c c c c c c c
+   c c c c                   c c c c c
+Y cKc c c  r * * * * * * * *  cKc c c Y K
+   c c c c  *     * *     *  c c c c c
+  c c c c  r   c   r   c   r  c c c c
+Y Kc c c c    s *     s *    c c c c cY K
+  c c c c  *   *       *   t  c c c c
+   c c c c  *     y *     *  c c c c c
+Y cKc c c  r *     *     * *  c c c c Y K
+   c c c c  * *         r    c c c c c
+  c c c c  r * * * * * *   *  c c c c
+Y Kc c c c  * * * *          c c c c cY K
+  c c c c  * * * * *       *  c c c c
+   c c c c  * * * *          c c c c c
+Y cKc c c c  r * * *       *  c c c c Y K
+   c c c c c  * * * *        c c c c c
+  c c c c c c  r * * *     *  c c c c
+Y Kc c c c c c  * * * *      c c c c cY K
+  c c c c c c    * * * *   *  c c c c
+   c c c c c      *   * *    c c c c c
+Y cKc c c c      *   *   r *  c c c c Y K
+   c c c c  y y y * * * * *  c c c c c 
+  c c c c                  r  c c c c
+Y Kc c c c c c c c c c c     c c c c cY K        
+  c c c c c c c c c c c c   c c c c c
+   c c c c c c c c c c c c c c c c c c
+Y cKc c c c c c c c c c c c c c c c c Y K
+   c c c c c c c c c c c c c c c c c c
+  c c c c c c c c c c c c c c c c c c 
+Y Kc c c c c c c c c c c c c c c c c cY K
+  c c c c c c c c c c c c c c c c c c
+        
+Y                                       K</textarea>
+</td>
+<td class="teletext" valign="top">
+<div class="black greenbg">Teletext Output:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div id="htmloutput" class="teletext"></div>            
+</td></tr></table>
+Foreground: <span class="black whitebg">k</span> <span class="red">r</span> <span class="green">g</span> <span class="yellow">y</span> <span class="blue">b</span> <span class="magenta">m</span> <span class="cyan">c</span> <span class="white">w</span> (or any other char)
+Background: K <span class="redbg black">R</span> <span class="greenbg black">G</span> <span class="yellowbg black">Y</span> <span class="bluebg black">B</span> <span class="magentabg black">M</span> <span class="cyanbg black">C</span> <span class="whitebg black">W</span> (or space)
+Separated graphics on/off: s t
+Don't output next pixel, helps you to cheat: &#92;
+
+<div class="black greenbg">HTML Output:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><textarea rows="10" cols="90" id="textoutput"></textarea>
+
+<div class="black greenbg">MODE 7 Graphics Blocks:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><textarea rows="10" cols="90" id="mode7output"></textarea>
+
+<span class="bluebg yellow ">  Teletext font by <a href="mailto:3d@galax.xyz" class="yellow">3d@galax.xyz</a> 2014    </span>
+   <a href="http://galax.xyz" class="red">Home</a>   <!-- -->   <a href="#top" class="green">Top</a>    <!-- -->  <a href="STATIC.HTM" class="yellow">Static</a>  <!-- -->   <a href="mailto:3d@galax.xyz" class="cyan">Email</a>  <!-- -->
+
+</td></tr></table>    
+</body>
+
+</html>

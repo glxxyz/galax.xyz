@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+
+<!-- 
+    Teletext example page 
+    Galax 2014-2015 http://galax.xyz
+    
+    MODE7GX3.TTF font by Galax 2015 - based on ModeSeven, created in 1998 by Andrew Bulhak
+
+-->
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>Galax Teletext T40 Demo</title>
+<link rel="stylesheet" href="TELETEXT.CSS">
+<script src="TELETEXT.js"></script>
+
+<script type="text/javascript" language="JavaScript">
+<!--
+
+function initTools() {
+    updateOutput();
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    document.getElementById('frames').addEventListener('change', handleFrameSelect, false);
+    document.getElementById("inputtext").onkeyup = updateOutput;
+    document.getElementById("numrows").onkeyup = updateOutput;
+    document.getElementById("numcols").onkeyup = updateOutput;
+    document.getElementById("samplefiles").onchange = loadSampleFile;
+    document.getElementById("sampleframes").onchange = loadSampleFrame;
+    
+    document.getElementById("doubleecho").onchange = updateOutput;
+	
+    document.getElementById("revealButton").onclick = revealClicked;
+    document.getElementById("playButton").onclick = playClicked;
+	
+    document.getElementById("pagenum").onkeyup = updateFrameOutput;
+    document.getElementById("pageup").onclick = pageupClicked;
+    document.getElementById("pagedown").onclick = pagedownClicked;
+    document.getElementById("subpagenum").onkeyup = updateFrameOutput;
+    document.getElementById("subpageup").onclick = subpageupClicked;
+    document.getElementById("subpagedown").onclick = subpagedownClicked;
+	
+	// load default file
+	initTeletext();
+}
+
+window.onload = initTools;
+//-->
+</script>
+
+</head>
+<body><center>
+<table><tr><td><div class="teletext"><table><tr><td class="teletext" valign="top"><span class="green"><a href="http://teletext40.com" class="yellow">Teletext 40</a> Example Rendered in M7GLX font</span>
+<textarea rows="20" cols="80" id="inputtext" style="display:none;" ></textarea><span class="green"><input size="2" value="40" id="numcols" style="display:none;" ></input><input size="2" value="25" id="numrows" style="display:none;" ></input><input id="doubleecho" value="checked" type="checkbox" style="display:none;" ></span><span class="green"><input type="file" id="files" name="files[]" multiple style="display:none;"  /><select id="samplefiles" style="display:none;" ></select></span>
+<span class="green">Frames: <input type="file" id="frames" name="frames[]" multiple /><select id="sampleframes">
+    <option value="">Sample Frames...</option>
+    <option value="SAMPLES/t40-frames-2015-04-22.csv">Teletext40 2015-04-22</option>
+    <option value="SAMPLES/facebash.csv">Keyboard Frustration</option>
+    <option value="SAMPLES/jeffrun.csv">Jeff Running</option>
+    <option value="SAMPLES/muybridge.csv">Muybridge's Horse</option>
+    <option value="SAMPLES/swirl.csv">Swirl</option>
+    <option value="SAMPLES/sevenseg.csv">Seven Segment Display</option>
+    <option value="SAMPLES/hamu.csv">Annoying Hampster</option>
+    <option value="SAMPLES/banana.csv">Annoying Banana</option>
+</select></span>
+</td>
+</tr>
+<tr>
+<td class="teletext" valign="top">
+<div class="black greenbg">Page:<input size="2" value="100" id="pagenum"><button id="pageup">+</button><button id="pagedown">-</button> Sub:<input size="2" value="1" id="subpagenum"><button id="subpageup">+</button><button id="subpagedown">-</button>/<span id="numsubpages">1</span> <button id="revealButton">Reveal</button> <button id="playButton">Play</button><input size="2" value="80" id="playdelay">ms</div><div id="htmloutput" class="teletext"></div>
+</td></tr></table><div class="teletext"><div class="black greenbg"></div><textarea rows="5" cols="90" id="textoutput" style="display:none;" ></textarea><textarea rows="5" cols="90" id="t40output" style="display:none;" ></textarea>
+<span class="bluebg yellow ">  Teletext font by <a href="mailto:3d@galax.xyz" class="yellow">3d@galax.xyz</a> 2015    </span>
+   <a href="http://galax.xyz" class="red">Home</a>   <!-- -->   <a href="#top" class="green">Top</a>    <!-- -->  <a href="STATIC.HTM" class="yellow">Static</a>  <!-- -->   <a href="mailto:3d@galax.xyz" class="cyan">Email</a>  <!-- -->
+</div>
+</body>
+
+</html>

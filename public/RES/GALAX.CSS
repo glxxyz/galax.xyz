@@ -1,0 +1,107 @@
+﻿/* 
+    Galax game pallette 
+    000000 black
+    e0e0e0 light grey ('white')
+    800080 pink darker
+    a000a0 pink dark
+    c000c0 pink light
+    e000e0 pink lighter
+    008080 blue darker
+    00a0a0 blue dark
+    00c0c0 blue light
+    00e0e0 blue lighter
+    e04040 red
+    e08000 orange dark
+    e0a000 orange light
+    e0c000 yellow dark
+    e0e000 yellow light
+    00e000 green
+*/
+
+/* Hard reset */
+html,body,div,span,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,section,summary,time,audio,video {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* unvisited link */
+a:link {
+    color: #e0c000;
+}
+
+/* visited link */
+a:visited {
+    color: #e08000;
+}
+
+/* mouse over link */
+a:hover {
+    color: #e04040;
+}
+
+/* selected link */
+a:active {
+    color: #00a0a0;
+}
+
+@font-face {
+    font-family: AtariSTLowRes;
+    src: url('RES/STLOWEX.TTF'));
+}
+
+@font-face {
+    font-family: AtariSTLowResIE;
+    src: url('RES/STLOWEX.EOT');  /* EOT is for IE */
+}
+
+h1 {
+    font-family: AtariSTLowRes, AtariSTLowResIE, fantasy, courier, fixed;
+    font-size: 24px;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    color: #e08000;
+}
+
+td {
+    font-family: AtariSTLowRes, fantasy, courier, fixed;
+    font-size: 24px;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    color: #a000a0;
+    background: black;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+body {
+    font-family: AtariSTLowRes, fantasy, courier, fixed;
+    font-size: 24px;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    color: #a000a0;
+    background: black;
+    border-width: 45px 75px 219px 75px; /* t r b l */
+    /* border-image: url('RES/GALAXBG.PNG') 45 75 219 75 stretch round; */ /* l r t b tb lr */
+    cursor: url(RES/GALAXXH.CUR);
+    padding: 24px;
+}
+
+div.main { overflow: auto; margin: 60px 80px 240px 80px; } /* t r b l */
+
+img.topstretch { position: fixed; top: 0; left: 0; right: 0; width: 100%; height: 45px;}
+img.topleft { position: fixed; top: 0; left:0; }
+img.topmid { position: fixed; top: 0; right:50%; margin-right: -126px;}
+img.leftstretch { position: fixed; top: 0; left: 0; bottom: 0; height: 100%; width: 75px;}
+img.rightstretch { position: fixed; top: 0; right: 0; bottom: 0; height: 100%; width: 75px;}
+img.topleftmid { position: fixed; top: 0; left:28%; margin-left: -45px; }
+img.toprightmid { position: fixed; top: 0; right:28%; margin-right: -45px;}
+img.topright { position: fixed; top: 0; right:0; }
+img.botstretch { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 219px;}
+img.botleft { position: fixed; bottom: 0; left:0; }
+img.botmid { position: fixed; bottom: 0; right:50%; margin-right: -210px;}
+img.botright { position: fixed; bottom: 0; right:0; }
