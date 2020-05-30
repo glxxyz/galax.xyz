@@ -6,15 +6,22 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "redirects": [ {
-    "source": "/INDEX.HTM",
-    "destination": "/index.html",
-    "type": 301
-    },
-    {
-    "source": "/TELETEXT/INDEX.HTM",
-    "destination": "/TELETEXT/index.html",
-    "type": 301
-    } ]
+    "redirects": [
+      {
+        "source": "/INDEX.HTM",
+        "destination": "/index.html",
+        "type": 301
+      },
+      {
+        "source": "/TELETEXT/INDEX.HTM",
+        "destination": "/TELETEXT/index.html",
+        "type": 301
+      },
+      {
+        "source": "/Teletext50/INDEX.HTM",
+        "destination": "/Teletext50/index.html",
+        "type": 301
+      }
+    ]
   }
 }
